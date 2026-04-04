@@ -18,6 +18,7 @@
 package org.apache.commons.jxpath.ri.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -53,14 +54,48 @@ public class TokenMgrErrorTest {
     }
 
     // case 9
+    @Test
+    void testTokenMgrError_FormatsMessage() {
+        TokenMgrError err = new TokenMgrError("Test Error", TokenMgrError.LEXICAL_ERROR);
 
+        String msg = err.getMessage();
 
+        assertEquals("Test Error", msg);
+    }
     // case 10
+    @Test
+    void testFullConstructor_FormatsMessage() {
+        TokenMgrError err = new TokenMgrError(
+                false,     // EOFSeen
+                0,         // lexState
+                1,         // errorLine
+                5,         // errorColumn
+                "",        // errorAfter
+                '&',       // curChar
+                TokenMgrError.LEXICAL_ERROR
+        );
 
+        String msg = err.getMessage();
 
+        assertTrue(msg.contains("line 1"));
+        assertTrue(msg.contains("column 5"));
+        assertTrue(msg.contains("&"));
+    }
     // case 11
+    @Test
+    void testAddEscapes_ConvertsControlChars() {
+        String input = "\b\t\n\f\r\'\"\\";
+        String escaped = TokenMgrError.addEscapes(input);
 
-
+        assertTrue(escaped.contains("\\b"));
+        assertTrue(escaped.contains("\\t"));
+        assertTrue(escaped.contains("\\n"));
+        assertTrue(escaped.contains("\\f"));
+        assertTrue(escaped.contains("\\r"));
+        assertTrue(escaped.contains("\\'"));
+        assertTrue(escaped.contains("\\\""));
+        assertTrue(escaped.contains("\\\\"));
+    }
     // case 12
 
 

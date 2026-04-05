@@ -83,7 +83,7 @@ public class TokenMgrErrorTest {
     }
     // case 11
     @Test
-    void testAddEscapes_ConvertsControlChars() {
+    void testAddEscapesConvertsControlChars() {
         String input = "\b\t\n\f\r\'\"\\";
         String escaped = TokenMgrError.addEscapes(input);
 

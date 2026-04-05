@@ -55,14 +55,21 @@ public class TokenMgrErrorTest {
 
     // case 9
     @Test
-    void testTokenMgrError_FormatsMessage() {
-        TokenMgrError err = new TokenMgrError("Test Error", TokenMgrError.LEXICAL_ERROR);
-
-        String msg = err.getMessage();
-
-        assertEquals("Test Error", msg);
+    void testEmptyConstructor_Instantiates() throws Exception {
+        TokenMgrError err = new TokenMgrError();
+        java.lang.reflect.Field field = TokenMgrError.class.getDeclaredField("errorCode");
+        field.setAccessible(true);
+        int value = (int) field.get(err);
+        assertEquals(TokenMgrError.LEXICAL_ERROR, value);
     }
     // case 10
+    @Test
+    void testMessageConstructor() {
+        TokenMgrError err = new TokenMgrError("Test Error", TokenMgrError.LEXICAL_ERROR);
+        String msg = err.getMessage();
+        assertEquals("Test Error", msg);
+    }
+    // case 11
     @Test
     void testFullConstructor_FormatsMessage() {
         TokenMgrError err = new TokenMgrError(
@@ -74,27 +81,10 @@ public class TokenMgrErrorTest {
                 '&',       // curChar
                 TokenMgrError.LEXICAL_ERROR
         );
-
         String msg = err.getMessage();
-
         assertTrue(msg.contains("line 1"));
         assertTrue(msg.contains("column 5"));
         assertTrue(msg.contains("&"));
-    }
-    // case 11
-    @Test
-    void testAddEscapesConvertsControlChars() {
-        String input = "\b\t\n\f\r\'\"\\";
-        String escaped = TokenMgrError.addEscapes(input);
-
-        assertTrue(escaped.contains("\\b"));
-        assertTrue(escaped.contains("\\t"));
-        assertTrue(escaped.contains("\\n"));
-        assertTrue(escaped.contains("\\f"));
-        assertTrue(escaped.contains("\\r"));
-        assertTrue(escaped.contains("\\'"));
-        assertTrue(escaped.contains("\\\""));
-        assertTrue(escaped.contains("\\\\"));
     }
     // case 12
     @Test

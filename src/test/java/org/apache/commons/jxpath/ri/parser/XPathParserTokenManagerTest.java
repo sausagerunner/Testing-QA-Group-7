@@ -32,15 +32,49 @@ public class XPathParserTokenManagerTest {
     Path temp_dir;
 
     // case 1
+    @Test
+    void testConstructor_WithValidState() {
+    SimpleCharStream stream = new SimpleCharStream(new StringReader("test"), 1, 1);
 
+    assertDoesNotThrow(() -> {
+        new XPathParserTokenManager(stream, 0);
+        });
+    }
 
     // case 2
+    @Test
+    void testReInit_ResetsState() {
+        SimpleCharStream stream1 = new SimpleCharStream(new StringReader("input1"), 1, 1);
+        XPathParserTokenManager manager = new XPathParserTokenManager(stream1, 0);
 
+        SimpleCharStream stream2 = new SimpleCharStream(new StringReader("input2"), 1, 1);
+
+        assertDoesNotThrow(() -> {
+            manager.ReInit(stream2, 0);
+        });
+    }
 
     // case 3
-
+    @Test
+    void testSwitchTo_ValidState() {
+        SimpleCharStream stream = new SimpleCharStream(new StringReader("data"), 1, 1);
+        XPathParserTokenManager manager = new XPathParserTokenManager(stream, 0);
+    
+        assertDoesNotThrow(() -> {
+            manager.SwitchTo(0);
+        });
+    }
 
     // case 4
+    @Test
+    void testSwitchTo_InvalidStateThrowsError() {
+        SimpleCharStream stream = new SimpleCharStream(new StringReader("data"), 1, 1);
+        XPathParserTokenManager manager = new XPathParserTokenManager(stream, 0);
+    
+        org.junit.jupiter.api.Assertions.assertThrows(TokenMgrError.class, () -> {
+            manager.SwitchTo(-1);
+        });
+    }
 
 
     // case 5

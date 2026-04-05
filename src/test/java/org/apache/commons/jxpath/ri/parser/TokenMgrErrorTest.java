@@ -97,6 +97,15 @@ public class TokenMgrErrorTest {
         assertTrue(escaped.contains("\\\\"));
     }
     // case 12
+    @Test
+    void testAddEscapes_ConvertsControlChars() {
+        String input = "\b\t\n\f\r\"\'\\";
+        String expected = "\\b\\t\\n\\f\\r\\\"\\'\\\\";
+
+        String result = TokenMgrError.addEscapes(input);
+
+        assertEquals(expected, result);
+    }
 
 
 }

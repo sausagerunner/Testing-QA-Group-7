@@ -17,9 +17,19 @@
 
 package org.apache.commons.jxpath.ri.parser;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class TokenTest {
 
     // case 13
+    @Test
+    void testToString_ReturnsImage() {
+        Token token = new Token();
+        token.image = "test_token";
 
+        assertEquals("test_token", token.toString());
+    }
 
 }
